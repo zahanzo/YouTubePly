@@ -1,3 +1,4 @@
+# WRITTED BY: 0xRobert, 2023, github.com/zahanzo, linkedin.com/in/0xrobert
 import yt_dlp
 import requests
 import re
@@ -22,6 +23,7 @@ def search_youtube(query):
         results = ydl.extract_info(f'ytsearch{20}:{query}', download=False)
 
     video_list = []
+    
     for entry in results['entries']:
         title = entry['title']
         video_url = entry['url']
@@ -36,6 +38,7 @@ def search_youtube(query):
 
 def download_thumbnail(url, filename):
     response = requests.get(url, stream=True)
+
     if response.status_code == 200:
         with open(f"images/{filename}", 'wb') as file:
             for chunk in response.iter_content(chunk_size=1024):
@@ -47,6 +50,7 @@ def download_thumbnail(url, filename):
 
 def download_all_thumbnails(results):
     threads = []
+
     for i, result in enumerate(results, start=1):
         thumbnail_filename = re.sub(r'[^\x00-\x7F]+', '', f"thumbnail_{i}.jpg")
         thread = threading.Thread(target=download_thumbnail, args=(result['thumbnail_url'], thumbnail_filename))
@@ -104,6 +108,7 @@ def open_video(*args):
 
 def video_on_enter(event):
     open_video()
+
 
 def search_on_enter(event):
     show_results()
